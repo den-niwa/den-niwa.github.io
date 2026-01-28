@@ -16,7 +16,7 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.3px;
   opacity: 0.85;
-  z-index: 10;
+  z-index: 20;
 }
 
 /* Bottom-right email */
@@ -27,7 +27,7 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.3px;
   opacity: 0.85;
-  z-index: 10;
+  z-index: 20;
 }
 
 .label-right a {
@@ -47,7 +47,7 @@ html, body {
   letter-spacing: 0.3px;
   opacity: 0.6;
   user-select: none;
-  z-index: 10;
+  z-index: 20;
 }
 
 /* Fullscreen stage for the single image */
@@ -58,7 +58,7 @@ html, body {
   padding: 90px;
   box-sizing: border-box;
   position: relative;
-  z-index: 6; /* above click zones so image hover works */
+  z-index: 5; /* below click zones */
 }
 
 img {
@@ -79,8 +79,7 @@ img {
   top: 0;
   bottom: 0;
   width: 50%;
-  z-index: 5;
-  /* no cursor here, so cursor feedback is image-only */
+  z-index: 6; /* above image so clicks work */
 }
 .zone.left { left: 0; }
 .zone.right { right: 0; }
@@ -106,4 +105,3 @@ img {
 @media (hover: none) and (pointer: coarse) {
   #counter { display: none; }
 }
-
