@@ -18,11 +18,9 @@
   img.addEventListener("dragstart", (e) => e.preventDefault());
   img.addEventListener("contextmenu", (e) => e.preventDefault());
 
-  // restore same image on refresh (comment out next 2 lines to go back to random)
-  let imageIndex = Number(localStorage.getItem("imageIndex") ?? 0);
-  if (!Number.isFinite(imageIndex)) imageIndex = 0;
-
   const preload = (src) => { const im = new Image(); im.src = src; };
+
+  let imageIndex = 0; // first image in the list
 
   const updateCounter = () => {
     if (!counterEl) return;
@@ -31,8 +29,6 @@
 
   const show = (i) => {
     imageIndex = (i + images.length) % images.length;
-    localStorage.setItem("imageIndex", String(imageIndex)); // remove if you want random each load
-
     img.src = images[imageIndex];
     preload(images[(imageIndex + 1) % images.length]);
     preload(images[(imageIndex + 2) % images.length]);
@@ -41,20 +37,20 @@
 
   const next = () => show(imageIndex + 1);
 
-  // only click image advances
   img.addEventListener("click", next);
 
-  // optional: keyboard
   window.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") next();
   });
 
-  // optional: swipe
   let startX = 0;
-  window.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  window.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
   window.addEventListener("touchend", (e) => {
     if (Math.abs(e.changedTouches[0].clientX - startX) > 40) next();
   }, { passive: true });
 
-  show(imageIndex);
+  show(0); // load first image
 })();
