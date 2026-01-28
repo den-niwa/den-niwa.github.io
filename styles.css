@@ -11,23 +11,23 @@ html, body {
 /* Bottom-left name */
 .label-left {
   position: fixed;
-  bottom: 36px;
   left: 36px;
+  bottom: 36px;
+  z-index: 20;
   font-size: 11px;
   letter-spacing: 0.3px;
   opacity: 0.85;
-  z-index: 20;
 }
 
 /* Bottom-right email */
 .label-right {
   position: fixed;
-  bottom: 36px;
   right: 36px;
+  bottom: 36px;
+  z-index: 20;
   font-size: 11px;
   letter-spacing: 0.3px;
   opacity: 0.85;
-  z-index: 20;
 }
 
 .label-right a {
@@ -40,14 +40,14 @@ html, body {
 /* Counter centered below image */
 #counter {
   position: fixed;
-  bottom: 28px;
   left: 50%;
+  bottom: 28px;
   transform: translateX(-50%);
+  z-index: 20;
   font-size: 11px;
   letter-spacing: 0.3px;
   opacity: 0.6;
   user-select: none;
-  z-index: 20;
 }
 
 /* Fullscreen stage for the single image */
@@ -63,13 +63,13 @@ html, body {
 
 /* Image */
 #photo {
+  display: block;
   max-width: 100%;
   max-height: calc(100vh - 180px);
   object-fit: contain;
-  display: block;
 
-  /* custom cursor (down sign) */
-  cursor: url("cursor.svg") 24 24, pointer;
+  /* original desktop cursor behavior */
+  /* (set below in media query) */
 
   /* download friction */
   -webkit-user-drag: none;
@@ -77,16 +77,22 @@ html, body {
   -webkit-touch-callout: none;
 }
 
-/* Zones kept for layout, but never steal clicks */
+/* Invisible zones (don’t steal clicks) */
 .zone {
   position: fixed;
-  inset: 0;
+  top: 0;
+  bottom: 0;
   width: 50%;
-  pointer-events: none;
   z-index: 2;
+  pointer-events: none;
 }
-.zone.left { left: 0; right: auto; }
-.zone.right { right: 0; left: auto; }
+.zone.left { left: 0; }
+.zone.right { right: 0; }
+
+/* Desktop cursor only on image (original) */
+@media (hover: hover) and (pointer: fine) {
+  #photo { cursor: e-resize; }
+}
 
 @media (max-width: 900px) {
   .stage { padding: 80px; }
