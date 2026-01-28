@@ -1,83 +1,56 @@
-const images = [
-  "images/01.jpg",
-  "images/02.jpg",
-  "images/03.jpg"
-];
+(async () => {
+  const img = document.getElementById("photo");
+  if (!img) throw new Error('Missing element: #photo');
 
-let imageIndex = 0;
-const img = document.getElementById("photo");
+  const counterEl = document.getElementById("counter");
+  const leftZone = document.querySelector(".zone.left");
+  const rightZone = document.querySelector(".zone.right");
 
-// download friction
-img.setAttribute("draggable", "false");
-img.addEventListener("dragstart", (e) => e.preventDefault());
-img.addEventListener("contextmenu", (e) => e.preventDefault());
+  const res = await fetch("images/list.json", { cache: "no-store" });
+  if (!res.ok) throw new Error("Missing images/list.json (run workflow once).");
 
-function preload(src) {
-  const pre = new Image();
-  pre.src = src;
-}
+  const files = await res.json();
+  const images = files
+    .filter((f) => /\.(jpe?g|png|webp|gif)$/i.test(f))
+    .map((f) => `images/${f}`);
 
-function preloadAround() {
-  const next1 = (imageIndex + 1) % images.length;
-  const next2 = (imageIndex + 2) % images.length;
-  const prev1 = (imageIndex - 1 + images.length) % images.length;
-  preload(images[next1]);
-  preload(images[next2]);
-  preload(images[prev1]);
-}
+  if (!images.length) throw new Error("No images found in images/list.json");
 
-function updateCounter() {
-  document.getElementById("counter").textContent =
-    String(imageIndex + 1).padStart(2, "0");
-}
+  img.draggable = false;
+  img.addEventListener("dragstart", (e) => e.preventDefault());
+  img.addEventListener("contextmenu", (e) => e.preventDefault());
 
-function show() {
-  img.src = images[imageIndex];
-  updateCounter();
-  preloadAround();
-}
+  let imageIndex = Math.floor(Math.random() * images.length);
 
-function next() {
-  imageIndex = (imageIndex + 1) % images.length;
-  show();
-}
+  const preload = (src) => { const im = new Image(); im.src = src; };
+  const updateCounter = () => {
+    if (!counterEl) return;
+    counterEl.textContent = String(imageIndex + 1).padStart(2, "0");
+  };
 
-function prev() {
-  imageIndex = (imageIndex - 1 + images.length) % images.length;
-  show();
-}
+  const show = (i) => {
+    imageIndex = (i + images.length) % images.length;
+    img.src = images[imageIndex];
+    preload(images[(imageIndex + 1) % images.length]);
+    preload(images[(imageIndex + 2) % images.length]);
+    updateCounter();
+  };
 
-// click on image: left half = prev, right half = next
-img.addEventListener("click", (e) => {
-  const rect = img.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  (x < rect.width / 2) ? prev() : next();
-});
+  const next = () => show(imageIndex + 1);
 
-// random entry
-imageIndex = Math.floor(Math.random() * images.length);
-show();
+  // If you want both sides to go forward (like your current labels suggest)
+  leftZone?.addEventListener("click", next);
+  rightZone?.addEventListener("click", next);
 
-// click margins
-document.querySelector(".zone.left").addEventListener("click", prev);
-document.querySelector(".zone.right").addEventListener("click", next);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") next();
+  });
 
-// keyboard
-window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") prev();
-  if (e.key === "ArrowRight") next();
-});
+  let startX = 0;
+  window.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  window.addEventListener("touchend", (e) => {
+    if (Math.abs(e.changedTouches[0].clientX - startX) > 40) next();
+  }, { passive: true });
 
-// swipe
-let startX = null;
-window.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-}, { passive: true });
-
-window.addEventListener("touchend", (e) => {
-  if (startX === null) return;
-  const endX = e.changedTouches[0].clientX;
-  const dx = endX - startX;
-  if (Math.abs(dx) > 40) (dx > 0) ? prev() : next();
-  startX = null;
-}, { passive: true });
+  show(imageIndex);
+})();
