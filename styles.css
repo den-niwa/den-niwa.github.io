@@ -69,7 +69,7 @@ html, body {
   display: block;
 
   /* custom cursor (down sign) */
-  cursor: url("cursor-next.svg") 24 24, pointer;
+  cursor: url("cursor.svg") 24 24, pointer;
 
   /* download friction */
   -webkit-user-drag: none;
