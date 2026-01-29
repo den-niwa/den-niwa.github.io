@@ -4,7 +4,7 @@
 
   const counterEl = document.getElementById("counter");
 
-  const res = await fetch("images/list.json", { cache: "no-store" });
+  const res = await fetch("images/list.json");
   if (!res.ok) throw new Error("Missing images/list.json (run workflow once).");
 
   const files = await res.json();
@@ -18,7 +18,11 @@
   img.addEventListener("dragstart", (e) => e.preventDefault());
   img.addEventListener("contextmenu", (e) => e.preventDefault());
 
-  const preload = (src) => { const im = new Image(); im.src = src; };
+  let _preloadImg = new Image();
+  const preload = (src) => {
+    if (!src || _preloadImg.src === src) return;
+    _preloadImg.src = src;
+  };
 
   let imageIndex = 0; // first image in the list
 
@@ -31,7 +35,6 @@
     imageIndex = (i + images.length) % images.length;
     img.src = images[imageIndex];
     preload(images[(imageIndex + 1) % images.length]);
-    preload(images[(imageIndex + 2) % images.length]);
     updateCounter();
   };
 
@@ -40,17 +43,26 @@
   img.addEventListener("click", next);
 
   window.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") show(imageIndex - 1);
+    if (e.key === "ArrowRight") show(imageIndex + 1);
   });
 
   let startX = 0;
-  window.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
+  window.addEventListener(
+    "touchstart",
+    (e) => {
+      startX = e.touches[0].clientX;
+    },
+    { passive: true },
+  );
 
-  window.addEventListener("touchend", (e) => {
-    if (Math.abs(e.changedTouches[0].clientX - startX) > 40) next();
-  }, { passive: true });
+  window.addEventListener(
+    "touchend",
+    (e) => {
+      if (Math.abs(e.changedTouches[0].clientX - startX) > 40) next();
+    },
+    { passive: true },
+  );
 
   show(0); // load first image
 })();
