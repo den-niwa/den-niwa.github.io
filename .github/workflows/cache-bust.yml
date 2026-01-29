@@ -1,0 +1,46 @@
+name: Auto Cache Bust
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "css/**"
+      - "js/**"
+      - "*.html"
+
+jobs:
+  cache-bust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update CSS versions
+        run: |
+          # Get current timestamp for unique version
+          TIMESTAMP=$(date +%s)
+
+          # Update all HTML files with new version
+          for file in *.html; do
+            if [ -f "$file" ]; then
+              sed -i "s/css\/satoshi\.css?v=[0-9]*/css\/satoshi.css?v=${TIMESTAMP}/g" "$file"
+              sed -i "s/css\/styles\.css?v=[0-9]*/css\/styles.css?v=${TIMESTAMP}/g" "$file"
+              echo "Updated $file"
+            fi
+          done
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.html
+
+          # Only commit if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-bust cache [skip ci]"
+            git push
+          fi
