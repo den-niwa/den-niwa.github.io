@@ -75,7 +75,7 @@ body {
 .about-email a,
 .about-social a,
 .about-return a {
-  color: inherit;
+  color: var(--color-text);
   text-decoration: none;
 }
 
@@ -88,6 +88,7 @@ body {
 .about-social a:hover,
 .about-return a:hover {
   text-decoration: underline;
+  opacity: var(--opacity-secondary);
 }
 
 /* ================================
