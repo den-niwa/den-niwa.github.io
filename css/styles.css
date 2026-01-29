@@ -311,7 +311,7 @@ body {
 @media (max-width: 900px) {
   .stage {
     align-items: flex-start;
-    padding: 1rem;
+    padding: 1rem var(--space-xxl);
     padding-top: var(--space-xxl);
   }
 
@@ -333,7 +333,7 @@ body {
 @media (max-width: 600px) {
   .stage {
     align-items: flex-start;
-    padding: 0.5rem;
+    padding: 0.5rem var(--space-xxl);
     padding-top: var(--space-xxl);
   }
 
