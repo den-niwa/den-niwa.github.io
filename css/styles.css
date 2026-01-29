@@ -39,14 +39,12 @@
 html,
 body {
   height: 100dvh;
-  height: 100vh;
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  backface-visibility: hidden;
   overflow: hidden !important;
   position: fixed;
   width: 100%;
@@ -104,7 +102,6 @@ body {
 
 .stage {
   height: 100dvh;
-  height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -113,16 +110,13 @@ body {
   box-sizing: border-box;
   position: relative;
   z-index: 1;
-  padding-top: var(--space-6xl);
 }
 
 #photo {
   display: block;
   max-width: 100%;
   max-height: calc(100dvh - calc(var(--space-6xl) * 2));
-  max-height: calc(100vh - calc(var(--space-6xl) * 2));
   height: calc((100dvh - calc(var(--space-6xl) * 2)) * 0.9);
-  height: calc((100vh - calc(var(--space-6xl) * 2)) * 0.9);
   object-fit: contain;
   -webkit-user-drag: none;
   user-select: none;
@@ -144,10 +138,6 @@ body {
   user-select: none;
   transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: opacity;
-}
-
-#photo:hover + #counter {
-  opacity: 0.8;
 }
 
 .zone {
@@ -183,7 +173,6 @@ body {
 
 .about {
   height: 100dvh;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -286,7 +275,6 @@ body {
   color: var(--color-text);
   padding: var(--space-lg);
   width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -308,6 +296,12 @@ body {
    Responsive Design
    ================================ */
 
+@media (min-width: 901px) {
+  #photo:hover + #counter {
+    opacity: 0.8;
+  }
+}
+
 @media (max-width: 900px) {
   .stage {
     align-items: flex-start;
@@ -318,7 +312,10 @@ body {
   #photo {
     margin-top: var(--space-xxl);
     max-height: calc(100dvh - calc(var(--space-xxl) * 2) - 1rem);
-    max-height: calc(100vh - calc(var(--space-xxl) * 2) - 1rem);
+  }
+
+  #counter {
+    opacity: 0.8;
   }
 
   .label-left {
@@ -340,7 +337,10 @@ body {
   #photo {
     margin-top: var(--space-xxl);
     max-height: calc(100dvh - calc(var(--space-xxl) * 2) - 1rem);
-    max-height: calc(100vh - calc(var(--space-xxl) * 2) - 1rem);
+  }
+
+  #counter {
+    opacity: 0.8;
   }
 
   .label-left {
