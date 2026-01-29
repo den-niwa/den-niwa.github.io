@@ -19,6 +19,7 @@
   img.addEventListener("contextmenu", (e) => e.preventDefault());
 
   let _preloadImg = new Image();
+  _preloadImg.loading = "eager";
   const preload = (src) => {
     if (!src || _preloadImg.src === src) return;
     _preloadImg.src = src;
@@ -76,6 +77,8 @@
   });
 
   let startX = 0;
+  let isTransitioning = false;
+
   window.addEventListener(
     "touchstart",
     (e) => {
@@ -87,7 +90,14 @@
   window.addEventListener(
     "touchend",
     (e) => {
-      if (Math.abs(e.changedTouches[0].clientX - startX) > 40) next();
+      if (isTransitioning) return;
+      if (Math.abs(e.changedTouches[0].clientX - startX) > 40) {
+        isTransitioning = true;
+        next();
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 300);
+      }
     },
     { passive: true },
   );

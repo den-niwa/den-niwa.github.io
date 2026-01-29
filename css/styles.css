@@ -43,6 +43,9 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
 }
 
 /* ================================
@@ -70,7 +73,8 @@ body {
 .label-left a,
 .label-right a,
 .about-email a,
-.about-social a {
+.about-social a,
+.about-return a {
   color: inherit;
   text-decoration: none;
 }
@@ -81,7 +85,8 @@ body {
 }
 
 .about-email a:hover,
-.about-social a:hover {
+.about-social a:hover,
+.about-return a:hover {
   text-decoration: underline;
 }
 
@@ -97,6 +102,8 @@ body {
   box-sizing: border-box;
   position: relative;
   z-index: 1;
+  backface-visibility: hidden;
+  contain: layout style paint;
 }
 
 #photo {
@@ -108,6 +115,10 @@ body {
   -webkit-user-drag: none;
   user-select: none;
   -webkit-touch-callout: none;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  will-change: auto;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .stage #counter {
@@ -121,7 +132,9 @@ body {
   letter-spacing: var(--letter-spacing-small);
   opacity: 0;
   user-select: none;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backface-visibility: hidden;
+  will-change: opacity;
 }
 
 #photo:hover + #counter {
@@ -167,6 +180,9 @@ body {
   justify-content: center;
   padding: var(--space-5xl) var(--space-xxl);
   box-sizing: border-box;
+  will-change: auto;
+  backface-visibility: hidden;
+  contain: layout style paint;
 }
 
 .about-side {
@@ -184,12 +200,14 @@ body {
   font-size: var(--font-size-large);
   line-height: 1;
   text-align: center;
+  will-change: auto;
+  backface-visibility: hidden;
 }
 
 .about-intro,
 .about-content h2 {
   font-size: var(--font-size-large);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 2rem 0;
   line-height: 1.3;
 }
 
@@ -214,17 +232,27 @@ body {
 }
 
 .about-email {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .about-social {
   display: flex;
   justify-content: center;
   gap: var(--space-xl);
+  margin-bottom: 2.5rem;
 }
 
 .about-social a {
   font-size: var(--font-size-large);
+}
+
+.about-return {
+  margin: 0;
+  margin-top: 2rem;
+}
+
+.about-return a {
+  font-size: 1rem;
 }
 
 /* ================================
@@ -310,8 +338,26 @@ body {
   .about-content,
   .about-intro,
   .about-content h2,
-  .about-social a {
+  .about-social a,
+  .about-return a {
     font-size: var(--font-size-mobile);
+  }
+
+  .about-intro,
+  .about-content h2 {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .about-email {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-social {
+    margin-bottom: 2rem;
+  }
+
+  .about-return {
+    margin-top: 1.5rem;
   }
 }
 
