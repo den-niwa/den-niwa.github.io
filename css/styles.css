@@ -50,6 +50,9 @@ body {
   overflow: hidden;
   position: fixed;
   width: 100%;
+  -webkit-overflow-scrolling: auto;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 /* ================================
@@ -102,14 +105,24 @@ body {
 .stage {
   height: 100dvh;
   height: 100vh;
-  display: grid;
-  place-items: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--space-6xl);
   box-sizing: border-box;
   position: relative;
   z-index: 1;
   backface-visibility: hidden;
   contain: layout style paint;
+  flex-direction: column;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: none;
 }
 
 #photo {
@@ -127,7 +140,10 @@ body {
   -webkit-font-smoothing: antialiased;
   will-change: auto;
   transition: opacity 0.3s ease-in-out;
-  touch-action: manipulation;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .stage #counter {
@@ -156,7 +172,11 @@ body {
   bottom: 0;
   width: 50%;
   z-index: 2;
-  pointer-events: none;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
 }
 
 .zone.left {
@@ -315,12 +335,12 @@ body {
 
 @media (max-width: 900px) {
   .stage {
-    padding: var(--space-5xl);
+    padding: var(--space-3xl);
   }
 
   #photo {
-    max-height: calc(100dvh - 7.5rem);
-    max-height: calc(100vh - 7.5rem);
+    max-height: calc(100dvh - 6rem);
+    max-height: calc(100vh - 6rem);
   }
 
   #counter {
@@ -334,12 +354,12 @@ body {
 
 @media (max-width: 600px) {
   .stage {
-    padding: var(--space-xxl);
+    padding: var(--space-lg);
   }
 
   #photo {
-    max-height: calc(100dvh - var(--space-3xl));
-    max-height: calc(100vh - var(--space-3xl));
+    max-height: calc(100dvh - var(--space-lg) * 2);
+    max-height: calc(100vh - var(--space-lg) * 2);
   }
 
   .label-left,

@@ -18,6 +18,34 @@
   img.addEventListener("dragstart", (e) => e.preventDefault());
   img.addEventListener("contextmenu", (e) => e.preventDefault());
 
+  // Prevent double-tap zoom
+  let lastTouchEnd = 0;
+  window.addEventListener(
+    "touchend",
+    (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    },
+    { passive: false },
+  );
+
+  // Prevent pinch zoom
+  window.addEventListener(
+    "touchmove",
+    (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    },
+    { passive: false },
+  );
+
+  // Prevent long-press context menu on iOS
+  img.addEventListener("longpress", (e) => e.preventDefault());
+
   let _preloadImg = new Image();
   _preloadImg.loading = "eager";
   const preload = (src) => {
