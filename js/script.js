@@ -4,21 +4,35 @@
 
   const counterEl = document.getElementById("counter");
 
-  // Cache-bust list.json aggressively to avoid stale CDN responses
+  // Cache-bust list.json aggressively and fallback to raw GitHub if needed
   const versionTag = document.querySelector('meta[name="site-version"]');
   const bust = `${(versionTag && versionTag.content) || ""}-${Date.now()}`;
-  const res = await fetch(`images/list.json?v=${bust}`, { cache: "no-store" });
-  if (!res.ok)
+  const sources = [
+    `images/list.json?v=${bust}`,
+    `https://raw.githubusercontent.com/den-niwa/den-niwa.github.io/main/images/list.json?ts=${Date.now()}`,
+  ];
+  let files = [];
+  for (const url of sources) {
+    try {
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (Array.isArray(data) && data.length) {
+        files = data;
+        break;
+      }
+    } catch {}
+  }
+  if (!files.length) {
     throw new Error(
-      "Missing images/list.json (ensure it exists or regenerate).",
+      "Unable to load images list. Make sure images/list.json is up-to-date.",
     );
-
-  const files = await res.json();
+  }
   const images = files
     .filter((f) => /\.(jpe?g|png|webp|gif)$/i.test(f))
     .map((f) => encodeURI(`images/${f}`));
 
-  if (!images.length) throw new Error("No images found in images/list.json");
+  if (!images.length) throw new Error("No images found in images list data");
 
   img.draggable = false;
   img.loading = "eager";
