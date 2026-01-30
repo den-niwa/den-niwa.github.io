@@ -262,7 +262,7 @@ body.page-ready {
 }
 
 .about-return a {
-  font-size: 1rem;
+  font-size: inherit;
 }
 
 /* ================================
@@ -396,8 +396,7 @@ body.page-ready {
 
   /* Make the About page "Back to Home" match Home labels on mobile */
   .about-return a {
-    font-size: var(--font-size-label);
-    opacity: 0.8;
+    font-size: inherit;
   }
 }
 
