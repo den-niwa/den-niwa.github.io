@@ -72,6 +72,16 @@
   const show = async (i) => {
     imageIndex = (i + images.length) % images.length;
     const src = images[imageIndex];
+    const setAlt = () => {
+      try {
+        const raw = src.split("/").pop() || "";
+        const name = raw.replace(/\.[^.]+$/, "");
+        const human = name.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
+        img.alt = human || "Portfolio image";
+      } catch {
+        img.alt = "Portfolio image";
+      }
+    };
     if (!firstShown && imageIndex === 0) {
       try {
         const pre = new Image();
@@ -79,6 +89,7 @@
         if (pre.decode) await pre.decode();
       } catch {}
       img.src = src;
+      setAlt();
       requestAnimationFrame(() => img.classList.add("loaded"));
       // Reveal the entire page once the first image is ready
       requestAnimationFrame(() => {
@@ -88,6 +99,7 @@
       firstShown = true;
     } else {
       img.src = src;
+      setAlt();
     }
     preload(images[(imageIndex + 1) % images.length]);
     updateCounter();

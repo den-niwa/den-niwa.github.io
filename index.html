@@ -44,6 +44,13 @@
     />
     <link rel="stylesheet" href="css/satoshi.css?v=1769756374" />
     <link rel="stylesheet" href="css/styles.css?v=1769756374" />
+    <link
+      rel="preload"
+      href="fonts/Satoshi-Medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <!-- Inline styles removed; handled in css/styles.css -->
   </head>
 
@@ -64,6 +71,19 @@
     <div class="zone left" aria-label="Previous image"></div>
     <div class="zone right" aria-label="Next image"></div>
 
+    <noscript>
+      <style>
+        body {
+          opacity: 1 !important;
+        }
+        .stage {
+          padding: 2rem;
+        }
+      </style>
+      <p style="text-align: center">
+        JavaScript is required to display images.
+      </p>
+    </noscript>
     <script src="js/script.js?v=1769756374"></script>
   </body>
 </html>

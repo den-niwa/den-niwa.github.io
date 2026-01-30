@@ -21,10 +21,18 @@ def alphanum_key(s: str):
 
 def main():
     files = []
-    for name in os.listdir(ROOT):
-        _, ext = os.path.splitext(name)
-        if ext.lower() in EXTS:
-            files.append(name)
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        # Skip hidden directories
+        dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+        for name in filenames:
+            if name == "list.json":
+                continue
+            _, ext = os.path.splitext(name)
+            if ext.lower() in EXTS:
+                rel = os.path.relpath(os.path.join(dirpath, name), ROOT)
+                # Normalize to forward slashes for web paths
+                rel = rel.replace(os.sep, "/")
+                files.append(rel)
 
     files.sort(key=alphanum_key)
 
